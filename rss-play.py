@@ -1,17 +1,41 @@
 import feedparser
+from HTMLParser import HTMLParser
+
+
+'''
+TODO: expand myhtmlparser class to create a list from a table.
+
+see: https://github.com/schmijos/html-table-parser-python3/blob/master/html_table_parser/parser.py
+'''
+
+class myHTMLParser(HTMLParser):
+    def handle_starttag(self, tag, attrs):
+        print 'Start tag: ', tag
+        for attr in attrs:
+            print '    attr:', attr
+    
 
 f = feedparser.parse('http://www.reddit.com/r/minecraft/.rss')
 
 print f.feed.title
 
-print '''
-Notch has invited you over for a party at his new Beverly Hills Mansion.
-See below for details :D
-'''
+print 'Basic RSS parser written in Python'
 
-print f.feed.subtitle
 
-for entrie in f.entries:
-    print '>>' + entrie.title + '\n  ' + entrie.description
-    print '>>' + entrie.link + '\n~~~~~~~~~~~~~~~~~~~~~~~~~~\n'
+print f.feed.subtitle + '\n'
 
+descriptions = []
+x = 1
+
+for entry in f.entries:
+    #print '>>' + entry.title + '\n'
+    #print '>>' + entry.link + '\n~~~~~~~~~~~~~~~~~~~~~~~~~~\n'
+    descriptions.append(entry.description)
+
+testhtml = '<head></head>'
+
+parser = HTMLParser()
+parser.feed(descriptions[x])
+
+print descriptions[x] + '\n'
+print parser.handle_starttag(parser, 'a', )
